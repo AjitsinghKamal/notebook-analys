@@ -30,10 +30,8 @@ function useTooltip<T extends HTMLElement>() {
 			});
 	};
 
-	const setSelection = (ev: SyntheticEvent) => {
+	const setSelection = (ev: Event) => {
 		ev.preventDefault();
-		ev.nativeEvent.stopPropagation();
-		ev.nativeEvent.stopImmediatePropagation();
 
 		const selection = document.getSelection();
 		const range = selection?.getRangeAt(0);
@@ -61,6 +59,9 @@ function useTooltip<T extends HTMLElement>() {
 	};
 
 	useEffect(() => {
+		document.addEventListener('selectionchange', (e) => {
+			console.log(e);
+		});
 		tooltipRef.current &&
 			window.addEventListener('mouseup', clearOnClickOutside);
 		return () => window.removeEventListener('mouseup', clearOnClickOutside);

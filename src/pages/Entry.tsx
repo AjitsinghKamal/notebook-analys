@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { Editor } from 'src/components';
+import { Note } from 'src/components';
 
 function EntryPage() {
 	return (
 		<Page>
 			<Content>
-				<Editor />
+				<Note />
 			</Content>
 		</Page>
 	);
@@ -23,6 +23,6 @@ const Page = styled.main`
 const Content = styled.div`
 	width: 100%;
 	height: 100%;
-	max-width: 1200px;
+	max-width: 1300px;
 `;
 export default EntryPage;

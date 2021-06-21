@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
+import Router from './router/Router';
 import './styles/index.css';
-import App from './App';
 
 render(
 	<StrictMode>
-		<App />
+		<Router />
 	</StrictMode>,
 	document.querySelector('#root')
 );

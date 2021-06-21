@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren } from 'react';
-import useTooltip from 'src/hooks/useTooltip';
+import useFormatting from 'src/hooks/useFormatting';
 import useWordAnalysis from 'src/hooks/useWordAnalysis';
 import AnalysisBoard from './AnalysisBoard';
 import Editor from './Editor';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 function Note({ placeholder }: PropsWithChildren<Props>) {
-	const { tooltipRef, onSelection, styles } = useTooltip<HTMLDivElement>();
+	const { tooltipRef, onFormat, styles } = useFormatting<HTMLDivElement>();
 	const {
 		analysisWatchRef,
 		shouldFindSimilarWords,
@@ -26,10 +26,21 @@ function Note({ placeholder }: PropsWithChildren<Props>) {
 				results={matchesFound}
 				resetActive={resetResults}
 			/>
-			<Tooltip ref={tooltipRef} style={styles}>
-				<TooltipActionBold>B</TooltipActionBold>
-				<TooltipActionItalic>i</TooltipActionItalic>
-				<TooltipActionUnder>U</TooltipActionUnder>
+			<Tooltip
+				ref={tooltipRef}
+				style={styles}
+				data-visible={styles.display}
+				aria-hidden={styles.display === 'none'}
+			>
+				<TooltipActionBold onClick={(e) => onFormat(e, 'strong')}>
+					B
+				</TooltipActionBold>
+				<TooltipActionItalic onClick={(e) => onFormat(e, 'em')}>
+					i
+				</TooltipActionItalic>
+				<TooltipActionUnder onClick={(e) => onFormat(e, 'u')}>
+					U
+				</TooltipActionUnder>
 			</Tooltip>
 		</Container>
 	);
@@ -39,6 +50,7 @@ const Container = styled.div`
 	height: 100%;
 	width: 100%;
 	display: flex;
+	position: relative;
 `;
 
 const Tooltip = styled.div`

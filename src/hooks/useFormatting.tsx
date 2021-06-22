@@ -15,6 +15,11 @@ const initialState: {
 	transform: 'none',
 };
 
+/**
+ * watches selection and allows formatting and
+ * selection modifications like showing a tooltip
+ *
+ */
 function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 	const [tooltipPos, setTooltipPos] = useState({ ...initialState });
 
@@ -33,12 +38,18 @@ function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 			});
 	};
 
+	/**
+	 * whenever a selection is created
+	 * figure out if the range is valid or not
+	 * @param ev selection event
+	 */
 	const setSelection = (ev: Event) => {
 		ev.preventDefault();
 		if (
 			targetRef.current &&
 			!(ev.target as Element).contains(targetRef.current)
 		) {
+			// bail out for any selection outside the target
 			return;
 		}
 		const selection = document.getSelection();
@@ -72,6 +83,12 @@ function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 		!clearOnClickOutside(e) && setSelection(e);
 	};
 
+	/**
+	 * replaces selection range with provided
+	 * modification tags
+	 * @param e event
+	 * @param key any valid HTML tag
+	 */
 	const onFormat = (
 		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
 		key: 'strong' | 'em' | 'u'
@@ -92,6 +109,8 @@ function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 	};
 
 	useEffect(() => {
+		// we are only watching selections via mouse events for now
+		// TODO: add selection via shift+arrow
 		const debouncedSelectionHandler = debounce(onSelection, 300);
 		targetRef.current &&
 			tooltipRef.current &&

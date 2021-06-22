@@ -36,7 +36,7 @@ export function getSimilarityAndFrequency(
 			matchLevel = MATCH_LEVEL.IDENTICAL;
 		} else {
 			const matches = new Set(word.match(matchRegx));
-			if (matches && matches.size >= wordOfInterest.length - 1) {
+			if (matches && matches.size >= new Set(wordOfInterest).size - 1) {
 				matchLevel = MATCH_LEVEL.SIMILAR;
 			}
 		}

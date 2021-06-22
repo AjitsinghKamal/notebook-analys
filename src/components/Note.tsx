@@ -17,8 +17,10 @@ function Note() {
 	} = useWordAnalysis<HTMLDivElement>();
 
 	return (
-		<Container ref={targetRef}>
-			<Editor ref={analysisWatchRef} />
+		<Container>
+			<EditSection ref={targetRef}>
+				<Editor ref={analysisWatchRef} />
+			</EditSection>
 			<AnalysisBoard
 				handleWordAnalysis={shouldFindSimilarWords}
 				results={matchesFound}
@@ -49,6 +51,10 @@ const Container = styled.div`
 	width: 100%;
 	display: flex;
 	position: relative;
+`;
+
+const EditSection = styled.section`
+	flex: 1 0 60%;
 `;
 
 const Tooltip = styled.div`

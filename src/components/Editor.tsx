@@ -13,7 +13,7 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 			exists: false, // local copy exists
 			showPlaceholder: true, // show placeholder decor
 			value: '', // local copy value
-			verifying: true // querying local cache
+			verifying: true, // querying local cache
 		});
 
 		const { t } = useTranslation();
@@ -25,31 +25,30 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 		const onDirty = debounce((e: React.KeyboardEvent<HTMLDivElement>) => {
 			const target = e.target as Element;
 			if (cache.showPlaceholder && target.children.length > 1) {
-				setState({...cache, showPlaceholder: false});
+				setState({ ...cache, showPlaceholder: false });
 			}
-			setCache('entry', target.innerHTML)
+			setCache('entry', target.innerHTML);
 		}, 600);
-
 
 		const loadEntryIfExist = async () => {
 			const _default = '<h1>Notebook</h1>';
 			try {
 				const cachedHtml = await getCache<string>('entry');
 				setState({
-					exists: true,
+					exists: !!cachedHtml,
 					value: cachedHtml || _default,
 					verifying: false,
-					showPlaceholder: false
+					showPlaceholder: !cachedHtml,
 				});
 			} catch (e) {
 				setState({
 					exists: false,
 					value: _default,
 					verifying: false,
-					showPlaceholder: true
+					showPlaceholder: true,
 				});
 			}
-		}
+		};
 
 		useEffect(() => {
 			loadEntryIfExist();
@@ -61,7 +60,9 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 					ref={ref}
 					contentEditable={!cache.verifying}
 					onKeyPress={onDirty}
-					dangerouslySetInnerHTML={!cache.verifying ? {__html: cache.value} : undefined}
+					dangerouslySetInnerHTML={
+						!cache.verifying ? { __html: cache.value } : undefined
+					}
 				/>
 				{cache.showPlaceholder && (
 					<Placeholder data-el="placeholder">
@@ -74,7 +75,8 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 );
 
 const Root = styled.div`
-	flex: 1 0 60%;
+	width: 100%;
+	height: 100%;
 	font-size: 1.2rem;
 	padding: 32px;
 	line-height: 1.65;

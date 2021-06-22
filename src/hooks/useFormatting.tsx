@@ -47,7 +47,7 @@ function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 		ev.preventDefault();
 		if (
 			targetRef.current &&
-			!(ev.target as Element).contains(targetRef.current)
+			!targetRef.current.contains(ev.target as Element)
 		) {
 			// bail out for any selection outside the target
 			return;

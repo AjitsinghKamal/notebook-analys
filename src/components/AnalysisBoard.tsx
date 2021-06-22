@@ -45,14 +45,16 @@ function AnalysisBoard({ handleWordAnalysis, results, resetActive }: Props) {
 				<Submit>{t('analysis.submit')}</Submit>
 			</Form>
 			{results.isPristine ? (
-				<Message>
+				<Message data-testid="placeholder">
 					<small>{t('analysis.desc')}</small>
 				</Message>
 			) : (
 				<div>
 					<Result>
 						<small>Word Frequency</small>
-						<strong>{results.frequency}</strong>
+						<strong data-testid="frequency">
+							{results.frequency}
+						</strong>
 					</Result>
 					<Result as="ul">
 						<small>Similar words used</small>

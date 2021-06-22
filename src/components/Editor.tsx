@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getCache, setCache } from 'src/utils/storage';
 import { debounce } from 'src/utils/debounce';
@@ -65,7 +65,7 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 					}
 				/>
 				{cache.showPlaceholder && (
-					<Placeholder data-el="placeholder">
+					<Placeholder data-testid="placeholder">
 						{t('entry.placeholder')}
 					</Placeholder>
 				)}

@@ -15,9 +15,10 @@ const initialState: {
 	transform: 'none',
 };
 
-function useFormatting<T extends HTMLElement>() {
+function useFormatting<T extends HTMLElement, E extends HTMLElement>() {
 	const [tooltipPos, setTooltipPos] = useState({ ...initialState });
 
+	const targetRef = useRef<E>(null);
 	const tooltipRef = useRef<T>(null);
 
 	const computeTooltipPosition = (el: HTMLElement, startOffset: number) => {
@@ -34,7 +35,12 @@ function useFormatting<T extends HTMLElement>() {
 
 	const setSelection = (ev: Event) => {
 		ev.preventDefault();
-
+		if (
+			targetRef.current &&
+			!(ev.target as Element).contains(targetRef.current)
+		) {
+			return;
+		}
 		const selection = document.getSelection();
 		const range = selection?.getRangeAt(0);
 		if (
@@ -87,16 +93,18 @@ function useFormatting<T extends HTMLElement>() {
 
 	useEffect(() => {
 		const debouncedSelectionHandler = debounce(onSelection, 300);
-		tooltipRef.current &&
+		targetRef.current &&
+			tooltipRef.current &&
 			window.addEventListener('mouseup', debouncedSelectionHandler);
 		return () => {
 			window.removeEventListener('mouseup', debouncedSelectionHandler);
 		};
-	}, [tooltipRef.current]);
+	}, [tooltipRef.current, targetRef.current]);
 
 	return useMemo(
 		() => ({
 			tooltipRef,
+			targetRef,
 			styles: tooltipPos,
 			onSelection: setSelection,
 			onFormat,

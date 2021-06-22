@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import type { State, ShouldFindSimilarWords } from 'src/hooks/useWordAnalysis';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
 	results: State;
@@ -10,6 +11,7 @@ type Props = {
 
 function AnalysisBoard({ handleWordAnalysis, results, resetActive }: Props) {
 	const [find, setWordToFind] = useState('');
+	const { t } = useTranslation();
 
 	const submitEntry = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -26,7 +28,7 @@ function AnalysisBoard({ handleWordAnalysis, results, resetActive }: Props) {
 		<Sidepanel>
 			<Form onSubmit={submitEntry}>
 				<label htmlFor="search">
-					Get Word Details
+					{t('analysis.label')}
 					{find && (
 						<Clear onClick={clearEntry} type="button">
 							Clear
@@ -35,19 +37,16 @@ function AnalysisBoard({ handleWordAnalysis, results, resetActive }: Props) {
 				</label>
 				<Input
 					name="search"
-					placeholder="Analysis word"
+					placeholder={t('analysis.placeholder')}
 					value={find}
 					autoComplete="off"
 					onChange={(e) => setWordToFind(e.target.value)}
 				/>
-				<Submit>Check</Submit>
+				<Submit>{t('analysis.submit')}</Submit>
 			</Form>
 			{results.isPristine ? (
 				<Message>
-					<small>
-						Check frequency and usage similarties of a word in this
-						notebook entry.
-					</small>
+					<small>{t('analysis.desc')}</small>
 				</Message>
 			) : (
 				<div>

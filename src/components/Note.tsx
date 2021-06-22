@@ -1,16 +1,14 @@
 import styled from '@emotion/styled';
-import { PropsWithChildren } from 'react';
 import useFormatting from 'src/hooks/useFormatting';
 import useWordAnalysis from 'src/hooks/useWordAnalysis';
 import AnalysisBoard from './AnalysisBoard';
 import Editor from './Editor';
 
-type Props = {
-	placeholder?: string;
-};
-
-function Note({ placeholder }: PropsWithChildren<Props>) {
-	const { tooltipRef, onFormat, styles } = useFormatting<HTMLDivElement>();
+function Note() {
+	const { tooltipRef, targetRef, onFormat, styles } = useFormatting<
+		HTMLDivElement,
+		HTMLDivElement
+	>();
 	const {
 		analysisWatchRef,
 		shouldFindSimilarWords,
@@ -19,7 +17,7 @@ function Note({ placeholder }: PropsWithChildren<Props>) {
 	} = useWordAnalysis<HTMLDivElement>();
 
 	return (
-		<Container>
+		<Container ref={targetRef}>
 			<Editor ref={analysisWatchRef} />
 			<AnalysisBoard
 				handleWordAnalysis={shouldFindSimilarWords}

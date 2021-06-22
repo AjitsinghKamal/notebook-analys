@@ -7,6 +7,8 @@ import './styles/reset.css';
 import './styles/tokens.css';
 import './styles/index.css';
 
+import './locales';
+
 render(
 	<StrictMode>
 		<Router />

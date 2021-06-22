@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { forwardRef, PropsWithChildren, useEffect, useState } from 'react';
-import css from 'src/styles/editor.module.css';
+import { forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 	(props, ref) => {
 		const [showPlaceholder, setPlaceholderVisibility] = useState(true);
+		const { t } = useTranslation();
 
 		const onDirty = (e: React.KeyboardEvent<HTMLDivElement>) => {
 			if (showPlaceholder) {
@@ -14,17 +15,12 @@ const Editor = forwardRef<HTMLDivElement, React.DOMAttributes<HTMLDivElement>>(
 		};
 		return (
 			<>
-				<Root
-					className={css.editor}
-					ref={ref}
-					contentEditable
-					onKeyPress={onDirty}
-				>
+				<Root ref={ref} contentEditable onKeyPress={onDirty}>
 					<h1>Notebook</h1>
 				</Root>
 				{showPlaceholder && (
 					<Placeholder data-el="placeholder">
-						Write down your entry ...
+						{t('entry.placeholder')}
 					</Placeholder>
 				)}
 			</>
